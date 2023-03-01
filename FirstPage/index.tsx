@@ -27,7 +27,8 @@ const FirstPage = () => {
 
   const handleOnClick = async () => {
     console.log('clicked');
-    await addDoc(collection(db, 'test'), question);
+    const result = await addDoc(collection(db, 'test'), { question });
+    console.log('result', result);
   };
 
   const handleOnChange = (e) => {
