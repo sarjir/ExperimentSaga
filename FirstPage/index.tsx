@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { doc, getDoc, collection } from 'firebase/firestore';
 import { db } from '../firebase';
 
 const FirstPage = () => {
+  const [question, setQuestion] = useState('');
   useEffect(() => {
     const fetchData = async () => {
       console.log('doc', doc);
@@ -28,10 +29,16 @@ const FirstPage = () => {
     console.log('clicked');
   };
 
+  const handleOnChange = (e) => {
+    setQuestion(e.target.value);
+  };
+
+  console.log('quesrion', question);
+
   return (
     <div>
       <label htmlFor="question">What is that you are curious about?</label>
-      <input id="question" type="text" />
+      <input onChange={handleOnChange} id="question" type="text" />
       <button onClick={handleOnClick}>Send</button>
     </div>
   );
