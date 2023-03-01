@@ -23,10 +23,16 @@ const FirstPage = () => {
 
     fetchData();
   }, []);
+
+  const handleOnClick = () => {
+    console.log('clicked');
+  };
+
   return (
     <div>
       <label htmlFor="question">What is that you are curious about?</label>
       <input id="question" type="text" />
+      <button onClick={handleOnClick}>Send</button>
     </div>
   );
 };
