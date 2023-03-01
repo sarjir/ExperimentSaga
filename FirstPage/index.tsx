@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { doc, getDoc, collection } from 'firebase/firestore';
+import { doc, getDoc, addDoc, collection } from 'firebase/firestore';
 import { db } from '../firebase';
 
 const FirstPage = () => {
@@ -25,8 +25,9 @@ const FirstPage = () => {
     fetchData();
   }, []);
 
-  const handleOnClick = () => {
+  const handleOnClick = async () => {
     console.log('clicked');
+    await addDoc(collection(db, 'test'), question);
   };
 
   const handleOnChange = (e) => {
