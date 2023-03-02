@@ -4,6 +4,8 @@ import { db } from '../firebase';
 
 const FirstPage = () => {
   const [question, setQuestion] = useState('');
+  const [hypothesis, setHypothesis] = useState('');
+
   useEffect(() => {
     const fetchData = async () => {
       console.log('doc', doc);
@@ -27,12 +29,12 @@ const FirstPage = () => {
 
   const handleOnSubmit = async () => {
     console.log('clicked');
-    const result = await addDoc(collection(db, 'test'), { question });
+    const result = await addDoc(collection(db, 'test'), { question, hypothesis });
     console.log('result', result);
   };
 
-  const handleOnChange = (e) => {
-    setQuestion(e.target.value);
+  const handleOnChange = (cb) => (e) => {
+    cb(e.target.value);
   };
 
   console.log('quesrion', question);
@@ -40,10 +42,11 @@ const FirstPage = () => {
   return (
     <form>
       <label htmlFor="question">What is that you are curious about?</label>
-      <input onChange={handleOnChange} id="question" type="text" />
+      <input onChange={handleOnChange(setQuestion)} id="question" type="text" />
 
       <label htmlFor="hypothesis">Name one hunch you have that might be true about the topic you are curious abour</label>
-      <input id="hypothesis" type="text"/>
+      <input onChange={handleOnChange(setHypothesis)}id="hypothesis" type="text"/>
+
       <input type="submt" onClick={handleOnSubmit} value="submit"/>
     </form>
   );
