@@ -41,6 +41,9 @@ const FirstPage = () => {
     <form>
       <label htmlFor="question">What is that you are curious about?</label>
       <input onChange={handleOnChange} id="question" type="text" />
+
+      <label htmlFor="hypothesis">Name one hunch you have that might be true about the topic you are curious abour</label>
+      <input id="hypothesis" type="text"/>
       <input type="submt" onClick={handleOnSubmit} value="submit"/>
     </form>
   );
