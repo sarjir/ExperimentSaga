@@ -25,7 +25,7 @@ const FirstPage = () => {
     fetchData();
   }, []);
 
-  const handleOnClick = async () => {
+  const handleOnSubmit = async () => {
     console.log('clicked');
     const result = await addDoc(collection(db, 'test'), { question });
     console.log('result', result);
@@ -38,11 +38,11 @@ const FirstPage = () => {
   console.log('quesrion', question);
 
   return (
-    <div>
+    <form>
       <label htmlFor="question">What is that you are curious about?</label>
       <input onChange={handleOnChange} id="question" type="text" />
-      <button onClick={handleOnClick}>Send</button>
-    </div>
+      <input type="submt" onClick={handleOnSubmit} value="submit"/>
+    </form>
   );
 };
 
