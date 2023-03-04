@@ -31,10 +31,11 @@ const FirstPage = () => {
   const handleOnSubmit = async (e) => {
     console.log('gello?');
     const formData = new FormData(e.target);
-    console.log('foemdata', [...formData.entries()]);
+    console.log('foemdata', formData.get("chosenHypotheis"));
     const result = await addDoc(collection(db, 'test'), {
       question,
       hypothesis: hunches,
+      chosenHypotheis: formData.get("chosenHypotheis")
     });
     console.log('result', result);
   };
