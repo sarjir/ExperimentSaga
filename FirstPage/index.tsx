@@ -66,7 +66,7 @@ const FirstPage = () => {
       
       <button onClick={handleAddHunch}>Add another hunch</button>
 
-      <input type="submt" onClick={handleOnSubmit} value="submit" />
+      <button onClick={handleOnSubmit} >Submit</button>
     </form>
   );
 };
