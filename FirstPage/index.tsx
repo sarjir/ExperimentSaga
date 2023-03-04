@@ -61,8 +61,8 @@ const FirstPage = () => {
         id="hypothesis"
         type="text"
       />
-      {hunches.map((hunch)=>{
-        return <p>{hunch}</p>
+      {hunches.map((hunch, i)=>{
+        return <p key={`${hunch}-${i}`}>{hunch}</p>
       })}
       <button onClick={handleAddHunch}>Add another hunch</button>
 
