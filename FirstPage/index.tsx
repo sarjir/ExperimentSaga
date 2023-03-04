@@ -5,6 +5,7 @@ import { db } from '../firebase';
 const FirstPage = () => {
   const [question, setQuestion] = useState('');
   const [hypothesis, setHypothesis] = useState('');
+  const [hunches, setHunches] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +30,10 @@ const FirstPage = () => {
 
   const handleOnSubmit = async () => {
     console.log('clicked');
-    const result = await addDoc(collection(db, 'test'), { question, hypothesis });
+    const result = await addDoc(collection(db, 'test'), {
+      question,
+      hypothesis,
+    });
     console.log('result', result);
   };
 
@@ -37,17 +41,31 @@ const FirstPage = () => {
     cb(e.target.value);
   };
 
-  console.log('quesrion', question);
+  const handleAddHunch = () => {
+    setHunches([...hunches, hypothesis]);
+
+  };
 
   return (
     <form>
       <label htmlFor="question">What is that you are curious about?</label>
       <input onChange={handleOnChange(setQuestion)} id="question" type="text" />
 
-      <label htmlFor="hypothesis">Name one hunch you have that might be true about the topic you are curious abour</label>
-      <input onChange={handleOnChange(setHypothesis)}id="hypothesis" type="text"/>
+      <label htmlFor="hypothesis">
+        Name one hunch you have that might be true about the topic you are
+        curious about
+      </label>
+      <input
+        onChange={handleOnChange(setHypothesis)}
+        id="hypothesis"
+        type="text"
+      />
+      {hunches.map((hunch)=>{
+        return <p>{hunch}</p>
+      })}
+      <button onClick={handleAddHunch}>Add another hunch</button>
 
-      <input type="submt" onClick={handleOnSubmit} value="submit"/>
+      <input type="submt" onClick={handleOnSubmit} value="submit" />
     </form>
   );
 };
