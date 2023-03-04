@@ -32,7 +32,7 @@ const FirstPage = () => {
     console.log('clicked');
     const result = await addDoc(collection(db, 'test'), {
       question,
-      hypothesis,
+      hypothesis: hunches,
     });
     console.log('result', result);
   };
@@ -41,7 +41,8 @@ const FirstPage = () => {
     cb(e.target.value);
   };
 
-  const handleAddHunch = () => {
+  const handleAddHunch = (e) => {
+    e.preventDefault();
     setHunches([...hunches, hypothesis]);
 
   };
