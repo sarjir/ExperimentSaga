@@ -44,7 +44,6 @@ const FirstPage = () => {
   const handleAddHunch = (e) => {
     e.preventDefault();
     setHunches([...hunches, hypothesis]);
-
   };
 
   return (
@@ -56,14 +55,15 @@ const FirstPage = () => {
         Name one hunch you have that might be true about the topic you are
         curious about
       </label>
+      {hunches.map((hunch, i)=>{
+        return <p key={`${hunch}-${i}`}>{hunch}</p>
+      })} 
       <input
         onChange={handleOnChange(setHypothesis)}
         id="hypothesis"
         type="text"
       />
-      {hunches.map((hunch, i)=>{
-        return <p key={`${hunch}-${i}`}>{hunch}</p>
-      })}
+      
       <button onClick={handleAddHunch}>Add another hunch</button>
 
       <input type="submt" onClick={handleOnSubmit} value="submit" />
