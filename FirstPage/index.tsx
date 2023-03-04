@@ -68,6 +68,15 @@ const FirstPage = () => {
 
       <button onClick={handleAddHunch}>Add another hunch</button>
 
+      <label>Which hunch do you believe in the most?</label>
+      <select id="chosenHypotheis">
+        {hunches.map((hunch,i)=>{
+          return(
+            <option key={`${hunch}-${i}-${Option}`}>{hunch}</option>
+          )
+        })}
+      </select>
+
       <button onClick={handleOnSubmit}>Submit</button>
     </form>
   );
