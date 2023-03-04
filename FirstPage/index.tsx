@@ -53,7 +53,7 @@ const FirstPage = () => {
       <input onChange={handleOnChange(setQuestion)} id="question" type="text" />
 
       <label htmlFor="hypothesis">
-        Name one hunch you have that might be true about the topic you are
+        Name as many hunches as you can that might be true about the topic you are
         curious about
       </label>
       {hunches.map((hunch, i) => {
