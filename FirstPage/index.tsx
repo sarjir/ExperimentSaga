@@ -6,6 +6,8 @@ const FirstPage = () => {
   const [question, setQuestion] = useState('');
   const [hypothesis, setHypothesis] = useState('');
   const [hunches, setHunches] = useState([]);
+  const [currentExperiment, setCurrentExperiment] = useState('');
+  const [experiments, setExperiments] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,13 +31,21 @@ const FirstPage = () => {
   }, []);
 
   const handleOnSubmit = async (e) => {
-    console.log('gello?');
     const formData = new FormData(e.target);
-    console.log('foemdata', formData.get("chosenHypotheis"));
+
+    const chosenHypothesis = formData.get('chosenHypotheis');
+    const hypotheses = hunches.map((hunch) => {
+      if (hunch === chosenHypothesis) {
+        return { hypothesis: hunch, experiments: experiments };
+      }
+
+      return { hypothesis: hunch, experiments: [] };
+    });
+
     const result = await addDoc(collection(db, 'test'), {
       question,
-      hypothesis: hunches,
-      chosenHypotheis: formData.get("chosenHypotheis")
+      hypotheses,
+      chosenHypotheis: chosenHypothesis,
     });
     console.log('result', result);
   };
@@ -50,41 +60,71 @@ const FirstPage = () => {
     setHypothesis('');
   };
 
+  const handleAddExperiment = (e) => {
+    e.preventDefault();
+    setExperiments((prevState) => [...prevState, currentExperiment]);
+  };
+
   return (
     <form onSubmit={handleOnSubmit}>
-      <label htmlFor="question">What is that you are curious about?</label>
-      <input
-        onChange={handleOnChange(setQuestion)}
-        id="question"
-        name="question"
-        type="text"
-      />
+      <div>
+        <label htmlFor="question">What is that you are curious about?</label>
+        <input
+          onChange={handleOnChange(setQuestion)}
+          id="question"
+          name="question"
+          type="text"
+        />
+      </div>
 
-      <label htmlFor="hypothesis">
-        Name as many hunches as you can that might be true about the topic you
-        are curious about
-      </label>
-      {hunches.map((hunch, i) => {
-        return <p key={`${hunch}-${i}`}>{hunch}</p>;
-      })}
-      <input
-        onChange={handleOnChange(setHypothesis)}
-        id="hypothesis"
-        name="hypothesis"
-        type="text"
-        value={hypothesis}
-      />
-
-      <button type="button" onClick={handleAddHunch}>
-        Add another hunch
-      </button>
-
-      <label>Which hunch do you believe in the most?</label>
-      <select id="chosenHypotheis" name="chosenHypotheis">
+      <div>
+        <label htmlFor="hypothesis">
+          Name as many hunches as you can that might be true about the topic you
+          are curious about
+        </label>
         {hunches.map((hunch, i) => {
-          return <option key={`${hunch}-${i}-${Option}`}>{hunch}</option>;
+          return <p key={`${hunch}-${i}`}>{hunch}</p>;
         })}
-      </select>
+        <input
+          onChange={handleOnChange(setHypothesis)}
+          id="hypothesis"
+          name="hypothesis"
+          type="text"
+          value={hypothesis}
+        />
+        <button type="button" onClick={handleAddHunch}>
+          Add another hunch
+        </button>
+      </div>
+
+      <div>
+        <label>Which hunch do you believe in the most?</label>
+        <select id="chosenHypotheis" name="chosenHypotheis">
+          {hunches.map((hunch, i) => {
+            return <option key={`${hunch}-${i}-${Option}`}>{hunch}</option>;
+          })}
+        </select>
+      </div>
+
+      <div>
+        <label htmlFor="experiments">
+          What would the world look like if your favorite hunch is true?
+        </label>
+        {experiments.map((experiment, i) => {
+          return <p key={`${experiment}-${i}`}>{experiment}</p>;
+        })}
+        <input
+          id="experiments"
+          name="experiments"
+          type="text"
+          value={currentExperiment}
+          placeholder="If my hunch is true, then..."
+          onChange={handleOnChange(setCurrentExperiment)}
+        />
+        <button type="button" onClick={handleAddExperiment}>
+          Add experiment
+        </button>
+      </div>
 
       <button type="submit" onClick={handleOnSubmit}>
         Submit
