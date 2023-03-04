@@ -43,7 +43,8 @@ const FirstPage = () => {
 
   const handleAddHunch = (e) => {
     e.preventDefault();
-    setHunches([...hunches, hypothesis]);
+    setHunches((prevState) => [...prevState, hypothesis]);
+    setHypothesis('');
   };
 
   return (
@@ -55,18 +56,19 @@ const FirstPage = () => {
         Name one hunch you have that might be true about the topic you are
         curious about
       </label>
-      {hunches.map((hunch, i)=>{
-        return <p key={`${hunch}-${i}`}>{hunch}</p>
-      })} 
+      {hunches.map((hunch, i) => {
+        return <p key={`${hunch}-${i}`}>{hunch}</p>;
+      })}
       <input
         onChange={handleOnChange(setHypothesis)}
         id="hypothesis"
         type="text"
+        value={hypothesis}
       />
-      
+
       <button onClick={handleAddHunch}>Add another hunch</button>
 
-      <button onClick={handleOnSubmit} >Submit</button>
+      <button onClick={handleOnSubmit}>Submit</button>
     </form>
   );
 };
