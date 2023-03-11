@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { doc, getDoc, addDoc, collection } from 'firebase/firestore';
+import { doc, getDoc, addDoc, collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 
 const FirstPage = () => {
@@ -11,16 +11,26 @@ const FirstPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log('doc', doc);
       console.log('db', db);
 
       // const citiesColfor = collection(db, 'cities');
 
       const docRef = doc(db, 'test/Z0FlnIQt8QYw4kbbH0Oi');
-      const docSnap = await getDoc(docRef);
+      const collectionRef = collection(db, 'test');
+      const docSnap = await getDocs(collectionRef);
+
+      console.log(
+        'snap',
+        docSnap.forEach((doc) => {
+          console.log('data', doc.data());
+        })
+      );
 
       if (docSnap.exists()) {
-        console.log('Document data:', docSnap.data());
+        docSnap.forEach((doc) => {
+          console.log(doc.data());
+        });
+        console.log('lol');
       } else {
         // doc.data() will be undefined in this case
         console.log('No such document!');
