@@ -36,10 +36,10 @@ const FirstPage = () => {
     const chosenHypothesis = formData.get('chosenHypotheis');
     const hypotheses = hunches.map((hunch) => {
       if (hunch === chosenHypothesis) {
-        return { hypothesis: hunch, experiments: experiments };
+        return { hypothesis: hunch, possibleExperiments: experiments };
       }
 
-      return { hypothesis: hunch, experiments: [] };
+      return { hypothesis: hunch, possibleExperiments: [] };
     });
 
     const result = await addDoc(collection(db, 'test'), {
@@ -47,7 +47,7 @@ const FirstPage = () => {
       hypotheses,
       chosenHypotheis: chosenHypothesis,
     });
-    console.log('result', result);
+    console.log('result', result.id);
   };
 
   const handleOnChange = (cb) => (e) => {
