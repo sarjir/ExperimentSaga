@@ -20,13 +20,13 @@ const FirstPage = () => {
       const collectionRef = collection(db, 'test');
       const docSnap = await getDocs(collectionRef);
 
-      console.log(
-        'snap',
-        docSnap.forEach((doc) => {
-          console.log('data', doc.data());
-          setSavedExperiments((prevState) => [...prevState, doc.data()]);
-        })
-      );
+      // console.log(
+      //   'snap',
+      //   docSnap.forEach((doc) => {
+      //     console.log('data', doc.data());
+      //     setSavedExperiments((prevState) => [...prevState, doc.data()]);
+      //   })
+      // );
 
       if (docSnap.exists()) {
         docSnap.forEach((doc) => {
@@ -43,23 +43,42 @@ const FirstPage = () => {
   }, []);
 
   const handleOnSubmit = async (e) => {
-    const formData = new FormData(e.target);
+    e.preventDefault();
+    //const formData = new FormData(e.target);
+    console.log('in handleSubmit');
 
-    const chosenHypothesis = formData.get('chosenHypotheis');
-    const hypotheses = hunches.map((hunch) => {
-      if (hunch === chosenHypothesis) {
-        return { hypothesis: hunch, possibleExperiments: experiments };
-      }
+    // const chosenHypothesis = formData.get('chosenHypotheis');
+    //console.log('chosenHypothesis', chosenHypothesis);
+    // const hypotheses = hunches.map((hunch) => {
+    //   if (hunch === chosenHypothesis) {
+    //     return { hypothesis: hunch, possibleExperiments: experiments };
+    //   }
 
-      return { hypothesis: hunch, possibleExperiments: [] };
-    });
+    //   return { hypothesis: hunch, possibleExperiments: [] };
+    // });
 
     const result = await addDoc(collection(db, 'test'), {
       question,
-      hypotheses,
-      chosenHypotheis: chosenHypothesis,
+      hypotheses: hunches,
+      //chosenHypotheis: chosenHypothesis,
     });
     console.log('result', result.id);
+
+    const docRef = doc(db, 'test', result.id);
+    const colRef = collection(docRef, 'experiments');
+    addDoc(colRef, {
+      name: 'lol',
+      experiments,
+    });
+
+    // not working
+    // const docRef = doc(db, `test/${result.id}/'experiments'`);
+    // console.log('docRef', docRef);
+    // await addDoc(docRef, {
+    //   name: 'lol',
+    //   experiments,
+    // });
+    console.log('finished');
   };
 
   const handleOnChange = (cb) => (e) => {
@@ -107,6 +126,9 @@ const FirstPage = () => {
           />
           <button type="button" onClick={handleAddHunch}>
             Add another hunch
+          </button>
+          <button type="submit" onClick={handleOnSubmit}>
+            Submit hypothesis
           </button>
         </div>
 
