@@ -43,30 +43,16 @@ const FirstPage = () => {
   }, []);
 
   const handleOnSubmit = async (e) => {
-    console.log('in handleSubmit');
-    //e.preventDefault();
     const formData = new FormData(e.target);
-    console.log('after formdata');
 
     const chosenHypothesis = formData.get('chosenHypotheis');
-    //console.log('chosenHypothesis', chosenHypothesis);
-    // const hypotheses = hunches.map((hunch) => {
-    //   if (hunch === chosenHypothesis) {
-    //     return { hypothesis: hunch, possibleExperiments: experiments };
-    //   }
-
-    //   return { hypothesis: hunch, possibleExperiments: [] };
-    // });
-
     const result = await addDoc(collection(db, 'test'), {
       question,
-      //hypotheses: hunches,
-      //chosenHypotheis: chosenHypothesis,
     });
     console.log('result', result.id);
+
     const questionRef = doc(db, 'test', result.id);
     const hypothesisRef = collection(questionRef, 'hypotheses');
-
     hunches.forEach(async (hunch) => {
       const hypothesis = await addDoc(hypothesisRef, {
         hunch,
@@ -81,6 +67,7 @@ const FirstPage = () => {
           hypothesis.id
         );
         const colRef = collection(currentHypothesis, 'experiments');
+
         addDoc(colRef, {
           name: 'lol',
           experiments,
@@ -88,13 +75,6 @@ const FirstPage = () => {
       }
     });
 
-    // not working
-    // const docRef = doc(db, `test/${result.id}/'experiments'`);
-    // console.log('docRef', docRef);
-    // await addDoc(docRef, {
-    //   name: 'lol',
-    //   experiments,
-    // });
     console.log('finished');
   };
 
