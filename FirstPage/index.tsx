@@ -43,11 +43,12 @@ const FirstPage = () => {
   }, []);
 
   const handleOnSubmit = async (e) => {
-    e.preventDefault();
-    //const formData = new FormData(e.target);
     console.log('in handleSubmit');
+    //e.preventDefault();
+    const formData = new FormData(e.target);
+    console.log('after formdata');
 
-    // const chosenHypothesis = formData.get('chosenHypotheis');
+    const chosenHypothesis = formData.get('chosenHypotheis');
     //console.log('chosenHypothesis', chosenHypothesis);
     // const hypotheses = hunches.map((hunch) => {
     //   if (hunch === chosenHypothesis) {
@@ -59,16 +60,32 @@ const FirstPage = () => {
 
     const result = await addDoc(collection(db, 'test'), {
       question,
-      hypotheses: hunches,
+      //hypotheses: hunches,
       //chosenHypotheis: chosenHypothesis,
     });
     console.log('result', result.id);
+    const questionRef = doc(db, 'test', result.id);
+    const hypothesisRef = collection(questionRef, 'hypotheses');
 
-    const docRef = doc(db, 'test', result.id);
-    const colRef = collection(docRef, 'experiments');
-    addDoc(colRef, {
-      name: 'lol',
-      experiments,
+    hunches.forEach(async (hunch) => {
+      const hypothesis = await addDoc(hypothesisRef, {
+        hunch,
+      });
+
+      if (hunch === chosenHypothesis) {
+        const currentHypothesis = doc(
+          db,
+          'test',
+          result.id,
+          'hypotheses',
+          hypothesis.id
+        );
+        const colRef = collection(currentHypothesis, 'experiments');
+        addDoc(colRef, {
+          name: 'lol',
+          experiments,
+        });
+      }
     });
 
     // not working
@@ -136,7 +153,7 @@ const FirstPage = () => {
           <label>Which hunch do you believe in the most?</label>
           <select id="chosenHypotheis" name="chosenHypotheis">
             {hunches.map((hunch, i) => {
-              return <option key={`${hunch}-${i}-${Option}`}>{hunch}</option>;
+              return <option key={`${hunch}-${i}-option`}>{hunch}</option>;
             })}
           </select>
         </div>
